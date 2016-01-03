@@ -32,15 +32,16 @@
 		</div>
 		<div class="col-md=2"></div>
 	</div>
+
 	
 <div id="backsheet"></div>
 <div id="popupBox">
-<h3>Popup</h3>
-	<button id="button2" type="button">exit</button>
+	<iframe width="600" height="600"
+		src="https://www.youtube.com/embed/RrRXxjowKD0">
+	</iframe>
+
 </div>
 </div>
-
-
 
 <script type="text/javascript">
 
@@ -50,7 +51,7 @@ $(document).ready(function() {
 		$("#popupBox").show();
 		$("#backsheet").show();
 	});
-	$("#button2").click(function() {
+	$("#backsheet").click(function() {
 		$("#popupBox").hide();
 		$("#backsheet").hide();
 	});

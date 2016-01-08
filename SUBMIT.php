@@ -27,7 +27,8 @@ $user_views = $JSON_Data['items'][0]['statistics']['viewCount'];
 
 mysql_connect("localhost","root", "secret");
 mysql_select_db("test_database");
-$select = mysql_query("SELECT * FROM members ORDER BY no_of_views DESC");
+$select = mysql_query("SELECT * FROM submitvideos");
+$select2 = mysql_query("SELECT * FROM submitvideos WHERE no_of_views<$user_views ");
 $numRow = mysql_num_rows($select);
 
 
@@ -35,8 +36,11 @@ $using =10;
 
 $videoid = '';
 $viewcount = '';
+$idnum = '';
 
 while ($videos = mysql_fetch_assoc($select)){
+
+	$idnum [] = $videos['id'];
 
 	if ($videos ['IdVideoId'] == $user_upload){ 
 	
@@ -44,12 +48,13 @@ while ($videos = mysql_fetch_assoc($select)){
 		break;
 
 	}
-	else {									
-		$videoid[] = $videos ['IdVideoId'];
-		$viewcount [] =$videos['no_of_views'];
-		$using = 1;
+	else {		
+		while ($videos = mysql_fetch_assoc($select2)){							
+			$lessviews [] = $videos['id'];
+		}
 	}
 }
+
 
 if ($using == 0){
 	//echo 'File already exists';
@@ -57,35 +62,33 @@ if ($using == 0){
 	return 0;
 }
 
-if ($using == 1){
 
-	for ($a = 0; $a<sizeof($videoid); $a++){
-		for ($b = 0; $b<sizeof($viewcount); $b++){
+if (!empty($lessviews)){
 
-			if ($viewcount [$b]<$user_views){
 
-				mysql_query("UPDATE  members SET IdVideoId = '$user_upload', no_of_views = '$user_views' WHERE IdVideoId = '$videoid[$a]' ");
-				return $user_upload;
- 			}
-			if (!($viewcount [$b] <$user_views)){
+	for ($a = 0; $a<sizeof($lessviews); $a++){
 
-				$random_pick = $videoid[array_rand($videoid)];
-				//echo "randomly picked id: ";
-				//echo $random_pick;
-				for ($a = 0; $a<sizeof($videoid); $a++){
-  		 
-					if ($videoid[$a] ==$random_pick){
-			
-						mysql_query("UPDATE  members SET IdVideoId = '$user_upload', no_of_views = '$user_views' WHERE IdVideoId = '$videoid[$a]' ");
-						return $user_upload;			
-					}
-				}
+		$random_pick = $lessviews[array_rand($lessviews)];
 
-			}
-		}
+		mysql_query("UPDATE  submitvideos SET IdVideoId = '$user_upload', no_of_views = '$user_views' WHERE id = '$random_pick' ");
+		return $random_pick;
 	}
+
 }
 
+
+if (empty($lessviews)){
+
+	for ($a = 0; $a<sizeof($idnum); $a++){
+
+		$random_pick = $idnum[array_rand($idnum)];
+
+		mysql_query("UPDATE  submitvideos SET IdVideoId = '$user_upload', no_of_views = '$user_views' WHERE id = '$random_pick' ");
+		return $random_pick;
+
+	}
+	
+}
 
 
 }

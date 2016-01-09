@@ -2,7 +2,6 @@
 
 function fill () {
 
-
 require_once 'Google/Client.php';
 require_once 'Google/Service/YouTube.php';
 
@@ -12,6 +11,11 @@ $client = new Google_Client();
 $client->setDeveloperKey($DEVELOPER_KEY);
 
 $youtube = new Google_Service_YouTube($client);
+
+mysql_connect("localhost","root", "secret");
+mysql_select_db("test_database");
+mysql_query("TRUNCATE TABLE fill"); // EMPTYING THE DATABASE
+mysql_close();
 
 $searchResponse = $youtube->search->listSearch('id,snippet', array(
   'q' => 'Popular Right Now',
@@ -26,7 +30,7 @@ $PLAYLISTS = array('PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-','PLrEnWoR732-D67iteOI6DP
 foreach ($searchResponse['items'] as $searchResult) {
   switch ($searchResult['id']['kind']) {
     case 'youtube#playlist':   
-   
+
       while ($using == 1){
      
         for ($index = 0; $index<sizeof ($PLAYLISTS); $index++){
@@ -45,22 +49,17 @@ foreach ($searchResponse['items'] as $searchResult) {
                 $_POST = sprintf('<li>%s (%s)</li>', $playlistItem['snippet']['title'],
                 $playlistItem['snippet']['resourceId']['videoId']);
       
-                 
                 $counter++;
                 echo $counter; 
                 echo $playlistItem['snippet']['title']; 
                 echo "<br>";   
-
-                        
-                           
+       
                 mysql_connect("localhost","root", "secret");
                 mysql_select_db("test_database");
                 $select = "insert into fill(snippettitle, idvideoid)value('". $playlistItem['snippet']['title']."', '".$playlistItem['snippet']['resourceId']['videoId']."')";
                 $sql=mysql_query($select);
 
                 mysql_close();
-
-            
 
                   if ($counter == 1000){  // VIDEO COUNTER
                     $using = 2;   
@@ -78,7 +77,6 @@ foreach ($searchResponse['items'] as $searchResult) {
     break;
   }
 }
-
 }
 
 ?>

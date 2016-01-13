@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>dhanush</title>
+    <title>One Thousand Videos</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
-<body>
+<body style = "background-color:black">
     <nav class = "navbar navbar-inverse">
 
 		<div class = "container-fluid">
 
             <div class ="navbar-header">
+
                 <a href = "#" class ="navbar-brand">ONE THOUSAND VIDEOS</a>
             </div>
 
@@ -24,10 +25,78 @@
                     <li><a href ="#">DONATE</a></li>
                     <li><a href ="#">ABOUT</a></li>
                 </ul>
+
             </div>
 
+        
 
 	</div>
+    <button type - "button" class = "btn btn-success" data-toggle="modal" data-target="#popUpWindow">Watch a Random Video</button>
+<div class = "container">
 
+        <div class = "row">
+
+            <div class ="col col-md-12 push-down-sm">
+
+          <!--  <a href = "maari.jpg"><img src = "maari.jpg" alt="My desktop" width =200 height = 100></a>
+             <a href = "danga.jpg"><img src = "danga.jpg" alt="My desktop"width =200 height = 100></a>
+             <a href = "drak.jpg"><img src = "drake.jpg" alt="My desktop"width =200 height = 100></a>-->
+             <?php 
+             	foreach(glob($log_directory.'/*.*') as $file) 
+             	{
+             	echo $file;
+             	echo "TEST";
+             	echo '<a href = "'.$file.'.jpg"><img src ="'.$file.'"width =200 height = 100></a>';
+				} 
+			?>
+			<h4> TEST2 </h4>
+             <!--<a href = "psy.jpg"><img src = "psy.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "ag.jpg"><img src = "ag.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "amy.jpg"><img src = "amy.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "d2.jpg"><img src = "d2.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "dh.jpg"><img src = "dh.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "mws.jpg"><img src = "mws.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "ok.jpg"><img src = "ok.jpg" alt="My desktop"width =200 height = 100></a>
+              <a href = "pop.jpg"><img src = "pop.jpg" alt="My desktop"width =200 height = 100></a>  
+                <a href = "akon.jpg"><img src = "akon.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "alyah.jpg"><img src = "alyah.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "au.jpg"><img src = "au.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "bruno.jpg"><img src = "bruno.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "cell.jpg"><img src = "cell.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "dp.jpg"><img src = "dp.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "jb.jpg"><img src = "jb.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "kh.jpg"><img src = "kh.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "nicki.jpg"><img src = "nicki.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "one.jpg"><img src = "one.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "ready.jpg"><img src = "ready.jpg" alt="My desktop"width =200 height = 100></a> 
+                <a href = "taylor.png"><img src = "taylor.png" alt="My desktop"width =200 height = 100></a>
+                <a href = "kpop.jpg"><img src = "kpop.jpg" alt="My desktop"width =200 height = 100></a>-->
+            </div>
+            </div>
+
+            
+
+        
+
+    </div>
+    
+
+<div class = "modal fade" id="popUpWindow">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+                <div class="modal-header">
+                        <button type = "button" class="close" data-dismiss="modal">&times;</button>
+                        <h3 class="modal-title">Random Video Player</h3>
+                </div>
+
+        <div class="modal-body">
+        <div class = "container">
+            <form role="form">
+                <div class = "embed-responsive embed-responsive-4by3">
+                <iframe class = "embed-responsive-item" src="http://www.youtube.com/embed/HC1TNCXTYeE"></iframe>
+                </div>
+            </form>
+        </div>
 </body>
 </html>

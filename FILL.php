@@ -1,5 +1,6 @@
 <?php
 
+
 function fill () {
 
 require_once 'Google/Client.php';
@@ -14,7 +15,7 @@ $youtube = new Google_Service_YouTube($client);
 
 mysql_connect("localhost","root", "secret");
 mysql_select_db("test_database");
-mysql_query("TRUNCATE TABLE fill"); // EMPTYING THE DATABASE
+mysql_query("TRUNCATE TABLE submitvideos"); // EMPTYING THE DATABASE
 mysql_close();
 
 $searchResponse = $youtube->search->listSearch('id,snippet', array(
@@ -24,6 +25,7 @@ $searchResponse = $youtube->search->listSearch('id,snippet', array(
 $playlists = '';
 $counter = 0; 
 $using = 1; 
+
 
 $PLAYLISTS = array('PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-','PLrEnWoR732-D67iteOI6DPdJH1opjAuJt' ,'PLrEnWoR732-CFfUX4TPybGxiO7q_5OS8D','PLrEnWoR732-CvU2EIng1mKhlXJHvaiAVM','PLrEnWoR732-DN561GnxXKMlocLMc4v4jL','PLrEnWoR732-AMp_tf9DDKAP_Vymn8zqh3','PLrEnWoR732-CN09YykVof2lxdI3MLOZda','PLrEnWoR732-D6uerjQ8dZiyy9bJID58CK','PLrEnWoR732-AtjHiRPQD7-Xaqa3SaXo-4','PLrEnWoR732-CV75Y0BCvbVyGDtjoghNEg','PLrEnWoR732-ByK1fe0UAOPbvy5TF5SALg','PLrEnWoR732-DZV1Jc8bUpVTF_HTPbywpE','PL-DfNcB3lim_WSHspytYZewQMWys0UOal', 'PL-DfNcB3lim9A2N3j94iYR4_TZ9VHSkFd','PL-DfNcB3lim9QjDJ1R8SMqec36o0xulEw','PL-DfNcB3lim_CDqzfWjqIRTBATo91EXQj','PL-DfNcB3lim_zrWrA4YIcQmtSSw0rib0e','PL-DfNcB3lim9A5ByvM484EQVHgXiOlAf2','PL-DfNcB3lim8TRkPtqwDhN0oubN71vnr9','PLp12xt0S4J0WYbhrjgfF-A7PK8XE0sW_Z','PL_yIBWagYVjyyqx_qPkbat5zufWZOyZEZ','PLeGljrPoR_9A97teNRpUENcCxBaj7Qtl7'); 
 
@@ -35,10 +37,10 @@ foreach ($searchResponse['items'] as $searchResult) {
      
         for ($index = 0; $index<sizeof ($PLAYLISTS); $index++){
   
-          $playlists .= sprintf('<li>%s (%s)</li>',
-          $searchResult['snippet']['title'], $searchResult['id']['playlistId']);
+            $playlists .= sprintf('<li>%s (%s)</li>',
+            $searchResult['snippet']['title'], $searchResult['id']['playlistId']);
 
-        
+          
           $playlistItemsResponse = $youtube->playlistItems->listPlaylistItems('snippet', array(
               'playlistId' => $PLAYLISTS[$index], 
               'maxResults' => 50
@@ -48,6 +50,14 @@ foreach ($searchResponse['items'] as $searchResult) {
 
                 $_POST = sprintf('<li>%s (%s)</li>', $playlistItem['snippet']['title'],
                 $playlistItem['snippet']['resourceId']['videoId']);
+
+                $video_id = $playlistItem['snippet']['resourceId']['videoId'];
+              
+
+              $JSON = file_get_contents("https://www.googleapis.com/youtube/v3/videos?part=statistics&id={$video_id}&key={$DEVELOPER_KEY}");
+              $JSON_Data = json_decode($JSON,true);
+
+                $thumbnail_url = "http://img.youtube.com/vi/$video_id/0.jpg";
       
                 $counter++;
                 echo $counter; 
@@ -56,7 +66,7 @@ foreach ($searchResponse['items'] as $searchResult) {
        
                 mysql_connect("localhost","root", "secret");
                 mysql_select_db("test_database");
-                $select = "insert into fill(snippettitle, idvideoid)value('". $playlistItem['snippet']['title']."', '".$playlistItem['snippet']['resourceId']['videoId']."')";
+                $select = "insert into submitvideos(title, video_id, no_of_views, thumbnail_url)value('". $playlistItem['snippet']['title']."', '".$playlistItem['snippet']['resourceId']['videoId']."', '".$JSON_Data['items'][0]['statistics']['viewCount']."', '".$thumbnail_url ."')";
                 $sql=mysql_query($select);
 
                 mysql_close();
